@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}Hakkında - Amazon Ürün Arama{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Amazon Ürün Arama Hakkında</h2>
+                
+                <p class="lead">
+                    Bu uygulama, Amazon Türkiye üzerindeki ürünleri aramak ve karşılaştırmak için geliştirilmiş bir web aracıdır.
+                </p>
+                
+                <hr class="my-4">
+                
+                <h4>Özellikler</h4>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item">
+                        <i class="fas fa-search"></i> Gelişmiş ürün arama
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-list"></i> Çoklu sayfa tarama
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-chart-bar"></i> Detaylı ürün bilgileri
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-clock"></i> Gerçek zamanlı fiyat takibi
+                    </li>
+                </ul>
+                
+                <h4>Nasıl Kullanılır?</h4>
+                <ol class="list-group list-group-numbered mb-4">
+                    <li class="list-group-item">Ana sayfadaki arama kutusuna ürün adını girin</li>
+                    <li class="list-group-item">Taramak istediğiniz sayfa sayısını seçin (1-10 arası)</li>
+                    <li class="list-group-item">Ara butonuna tıklayın ve sonuçları bekleyin</li>
+                    <li class="list-group-item">Ürün detaylarını inceleyin ve karşılaştırın</li>
+                </ol>
+                
+                <h4>Teknik Detaylar</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Backend</th>
+                                <td>Python Flask</td>
+                            </tr>
+                            <tr>
+                                <th>Frontend</th>
+                                <td>HTML5, Bootstrap 5, JavaScript</td>
+                            </tr>
+                            <tr>
+                                <th>Veri Kaynağı</th>
+                                <td>Amazon Türkiye</td>
+                            </tr>
+                            <tr>
+                                <th>Güncelleme Sıklığı</th>
+                                <td>Gerçek Zamanlı</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
