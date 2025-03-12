@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}Ana Sayfa - Amazon Ürün Arama{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-5">Amazon Ürün Arama</h1>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form id="searchForm" class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="keyword" placeholder="Ürün adı..." required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control" id="maxPages" value="1" min="1" max="10">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <span class="normal-text">Ara</span>
+                            <span class="loading">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Aranıyor...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="results" class="row g-4"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const keyword = document.getElementById('keyword').value;
+        const maxPages = document.getElementById('maxPages').value;
+        const resultsDiv = document.getElementById('results');
+        const form = e.target;
+        
+        // Loading durumunu göster
+        form.querySelector('.normal-text').style.display = 'none';
+        form.querySelector('.loading').style.display = 'inline-block';
+        form.querySelector('button').disabled = true;
+        
+        try {
+            const response = await fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    keyword: keyword,
+                    max_pages: maxPages
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            // Sonuçları göster
+            resultsDiv.innerHTML = data.products.map(product => `
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 product-card">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.title || 'İsimsiz Ürün'}</h5>
+                            <p class="card-text">
+                                ${product.price ? `<strong>Fiyat:</strong> ${product.price} TL<br>` : ''}
+                                ${product.rating ? `<strong>Puan:</strong> <span class="rating">★</span> ${product.rating}<br>` : ''}
+                                ${product.review_count ? `<strong>Değerlendirme:</strong> ${product.review_count}<br>` : ''}
+                                <small class="text-muted">ASIN: ${product.asin || 'N/A'}</small>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="${product.url}" target="_blank" class="btn btn-sm btn-outline-primary w-100">
+                                Ürüne Git
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+        } catch (error) {
+            resultsDiv.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        ${error.message}
+                    </div>
+                </div>
+            `;
+        } finally {
+            // Loading durumunu kaldır
+            form.querySelector('.normal-text').style.display = 'inline-block';
+            form.querySelector('.loading').style.display = 'none';
+            form.querySelector('button').disabled = false;
+        }
+    });
+</script>
+{% endblock %} 
